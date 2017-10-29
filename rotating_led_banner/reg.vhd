@@ -12,6 +12,7 @@ entity reg is
     d:          in unsigned(N-1 downto 0);
     q:          out unsigned(N-1 downto 0)
     );
+end reg;
 
 architecture arch of reg is
 begin
