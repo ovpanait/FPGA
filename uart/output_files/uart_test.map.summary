@@ -1,0 +1,16 @@
+Analysis & Synthesis Status : Successful - Tue Dec 19 21:17:59 2017
+Quartus Prime Version : 17.0.2 Build 602 07/19/2017 SJ Lite Edition
+Revision Name : uart_test
+Top-level Entity Name : qtest
+Family : MAX 10
+Total logic elements : 74
+    Total combinational functions : 72
+    Dedicated logic registers : 52
+Total registers : 52
+Total pins : 49
+Total virtual pins : 0
+Total memory bits : 0
+Embedded Multiplier 9-bit elements : 0
+Total PLLs : 0
+UFM blocks : 0
+ADC blocks : 0

@@ -1,0 +1,27 @@
+-------------------------------------------------------------------------------
+-- UART
+-- Simple loopback
+-------------------------------------------------------------------------------
+library ieee;
+    use ieee.std_logic_1164.all;
+    use ieee.numeric_std.all;
+    use ieee.math_real.all;
+
+entity loopback is
+    generic (
+        baud            : positive;
+        clock_frequency : positive
+    );
+    port (  
+        clock           : in std_logic;
+        reset           : in std_logic;    
+        rx              : in std_logic;
+        tx              : out std_logic
+    );
+end loopback;
+
+architecture rtl of loopback is
+
+begin
+ 
+end rtl;
