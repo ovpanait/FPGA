@@ -1,0 +1,44 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity pipe_st1 is
+	port(
+		clk:		in std_logic;
+		reset:	in std_logic;
+		en_in:	in std_logic;
+		
+		rx_a:		in signed(15 downto 0) ;
+		rx_b:		in signed(15 downto 0) ;
+		ry_a:		in signed(15 downto 0) ;
+		ry_b:		in signed(15 downto 0) ;
+		
+		diff_x:			out signed(15 downto 0);
+		diff_y:			out signed(15 downto 0);
+		en_out:			out std_logic
+	);
+end pipe_st1;
+
+architecture arch of pipe_st1 is
+
+begin
+
+process(clk, reset)
+begin
+if reset = '0' then
+	diff_x <= (others => '0');
+	diff_y <= (others => '0');
+elsif (clk'event and clk='1') then
+	if en_in = '1' then
+		diff_x <= rx_b - rx_a;
+		diff_y <= ry_b - ry_a;
+		en_out <= '1';
+	else
+		diff_x <= (others => '0');
+		diff_y <= (others => '0');
+		en_out <= '0';
+	end if;
+end if;
+end process;
+
+end arch;
