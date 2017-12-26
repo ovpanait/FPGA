@@ -13,6 +13,8 @@ entity unsigned_to_fp is
 		
 		output:		out unsigned(63 downto 0);
 		en_out:		out std_logic
+--		debug:		out unsigned(7 downto 0)
+		
 	);
 end unsigned_to_fp;
 
@@ -47,19 +49,24 @@ begin
 			in_tmp    := input;
 			index_tmp := "01111111111";
 			
-			for I in 63 downto 0  loop
-				if in_tmp(63) = '1' then
-					index_tmp := (index_tmp + to_unsigned(I - 1, index_tmp'length));
-					exit;
-				else
-					in_tmp := (in_tmp(62 downto 0) & '0'); -- shift 1 bit left
-				end if;
-			end loop;
-			
-			output_next(63) <= '0'; 	-- we assume only possitive input numbers
-			output_next(62 downto 52) <= index_tmp;
-			output_next(51 downto 0) <= in_tmp(62 downto 11); 
-			en_out_next <= '1';
+			if in_tmp = to_unsigned(0, in_tmp'length) then
+				output_next <= (others => '0');
+			else
+				for I in 63 downto 0  loop
+					if in_tmp(63) = '1' then
+						index_tmp := (index_tmp + to_unsigned(I, index_tmp'length));
+					--	debug <= to_unsigned(I - 1, debug'length);
+						exit;
+					else
+						in_tmp := (in_tmp(62 downto 0) & '0'); -- shift 1 bit left
+					end if;
+				end loop;
+				
+				output_next(63) <= '0'; 	-- we assume only possitive input numbers
+				output_next(62 downto 52) <= index_tmp;
+				output_next(51 downto 0) <= in_tmp(62 downto 11); 
+				en_out_next <= '1';
+			end if;
 		else
 			output_next(63)					<= '0';
 			output_next(62 downto 52) 		<= (others => '0');
