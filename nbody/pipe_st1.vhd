@@ -8,20 +8,20 @@ entity pipe_st1 is
 		reset:	in std_logic;
 		en_in:	in std_logic;
 		
-		rx_a:		in signed(15 downto 0) ;
-		rx_b:		in signed(15 downto 0) ;
-		ry_a:		in signed(15 downto 0) ;
-		ry_b:		in signed(15 downto 0) ;
+		rx_a:		in signed(10 downto 0) ;
+		rx_b:		in signed(10 downto 0) ;
+		ry_a:		in signed(10 downto 0) ;
+		ry_b:		in signed(10 downto 0) ;
 		
-		diff_x:			out signed(15 downto 0);
-		diff_y:			out signed(15 downto 0);
+		diff_x:			out signed(10 downto 0);
+		diff_y:			out signed(10 downto 0);
 		en_out:			out std_logic
 	);
 end pipe_st1;
 
 architecture arch of pipe_st1 is
-signal diffx_reg, diffx_next:		signed(15 downto 0);
-signal diffy_reg, diffy_next:		signed(15 downto 0);
+signal diffx_reg, diffx_next:		signed(10 downto 0);
+signal diffy_reg, diffy_next:		signed(10 downto 0);
 signal en_out_reg, en_out_next:	std_logic;
 begin
 
