@@ -62,7 +62,7 @@ begin
 					end if;
 				end loop;
 				
-				output_next(63) <= '0'; 	-- we assume only possitive input numbers
+				output_next(63) <= '0'; 	-- we assume only positive input numbers
 				output_next(62 downto 52) <= index_tmp;
 				output_next(51 downto 0) <= in_tmp(62 downto 11); 
 				en_out_next <= '1';

@@ -26,13 +26,16 @@ signal en_out3:	std_logic;
 signal r_3_fp:		unsigned(63 downto 0);
 signal en_out4:	std_logic;
 
+signal mul_res:	unsigned(63 downto 0);
+signal en_out5:	std_logic;
+
 -- debug
 signal tmp_dbg:	unsigned(7 downto 0);
 begin
 
 	-- 1 stage pipeline - calculate 
 	pipe_stage1: work.pipe_st1
-		port map(clk => clk, reset => reset, en_in => '1', rx_a => "00000000001", rx_b => "00000000000", 
+		port map(clk => clk, reset => reset, en_in => '1', rx_a => "00000001111", rx_b => "00000000000", 
 		ry_a => "00000000000", ry_b => "00000000000", diff_x => diff_x, diff_y => diff_y, en_out=> en_out1);
 	
 	-- 1 stage pipeline - calculate r
@@ -45,15 +48,18 @@ begin
 	
 	r_cube_fp: work.unsigned_to_fp
 		port map(clk => clk, reset => reset, en_in => en_out3, input => r_3, output => r_3_fp, en_out => en_out4);
+	
+	fpmu_test: work.fpmu
+		port map(clk => clk, reset => reset, en_in => en_out4, a => r_3_fp, b => r_3_fp, result => mul_res, en_out => en_out5);
 		
---	debug <= std_logic_vector(r_3_fp(63 downto 56));
---	debug <= std_logic_vector(r_3_fp(55 downto 48));
---	debug <= std_logic_vector(r_3_fp(47 downto 40));
---	debug <= std_logic_vector(r_3_fp(39 downto 32));
---	debug <= std_logic_vector(r_3_fp(31 downto 24));
---	debug <= std_logic_vector(r_3_fp(23 downto 16));
---	debug <= std_logic_vector(r_3_fp(15 downto 8));
---	debug <= std_logic_vector(r_3_fp(7 downto 0));
+--	debug <= std_logic_vector(mul_res(63 downto 56));
+--	debug <= std_logic_vector(mul_res(55 downto 48));
+--	debug <= std_logic_vector(mul_res(47 downto 40));
+--	debug <= std_logic_vector(mul_res(39 downto 32));
+--	debug <= std_logic_vector(mul_res(31 downto 24));
+--	debug <= std_logic_vector(mul_res(23 downto 16));
+--	debug <= std_logic_vector(mul_res(15 downto 8));
+	debug <= std_logic_vector(mul_res(7 downto 0));
 --		debug <= std_logic_vector(tmp_dbg);
 		
 end arch;
