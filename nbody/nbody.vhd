@@ -31,6 +31,12 @@ signal en_out5:	std_logic;
 
 signal uns_out:	unsigned(63 downto 0);
 signal en_out6:	std_logic;
+
+signal add_out:	unsigned(63 downto 0);
+signal test_sig2: unsigned(63 downto 0) := "0011111111111000000000000000000000000000000000000000000000000000"; -- 1.5F
+signal test_sig1:	unsigned(63 downto 0) := "1011111100101010001101101110001011101011000111000100001100101101"; -- 123
+signal en_out7:	std_logic;
+
 -- debug
 signal tmp_dbg:	unsigned(7 downto 0);
 begin
@@ -51,20 +57,22 @@ begin
 	r_cube_fp: work.unsigned_to_fp
 		port map(clk => clk, reset => reset, en_in => en_out3, input => r_3, output => r_3_fp, en_out => en_out4);
 	
-	fpmu_test: work.fpmu
-		port map(clk => clk, reset => reset, en_in => en_out4, a => r_3_fp, b => r_3_fp, result => mul_res, en_out => en_out5);
-	
-	fp_to_u64:	work.ftou
-		port map(clk => clk, reset => reset, en_in => en_out5, input => mul_res, output => uns_out, debug => tmp_dbg, en_out => en_out6);
+--	fpmu_test: work.fpmu
+--		port map(clk => clk, reset => reset, en_in => en_out4, a => r_3_fp, b => r_3_fp, result => mul_res, en_out => en_out5);
+	fp_add: work.fp_add
+		port map(clk => clk, reset => reset, en_in => en_out4, a => test_sig2, b => test_sig1, result => add_out, en_out => en_out5);
 		
---	debug <= std_logic_vector(uns_out(63 downto 56));
---	debug <= std_logic_vector(uns_out(55 downto 48));
---	debug <= std_logic_vector(uns_out(47 downto 40));
---	debug <= std_logic_vector(uns_out(39 downto 32));
-	debug <= std_logic_vector(uns_out(31 downto 24));
---	debug <= std_logic_vector(uns_out(23 downto 16));
---	debug <= std_logic_vector(uns_out(15 downto 8));
---	debug <= std_logic_vector(uns_out(7 downto 0));
+--	fp_to_u64:	work.ftou
+--		port map(clk => clk, reset => reset, en_in => en_out5, input => mul_res, output => uns_out, debug => tmp_dbg, en_out => en_out6);
+		
+--	debug <= std_logic_vector(add_out(63 downto 56));
+--	debug <= std_logic_vector(add_out(55 downto 48));
+--	debug <= std_logic_vector(add_out(47 downto 40));
+--	debug <= std_logic_vector(add_out(39 downto 32));
+--	debug <= std_logic_vector(add_out(31 downto 24));
+--	debug <= std_logic_vector(add_out(23 downto 16));
+--	debug <= std_logic_vector(add_out(15 downto 8));
+	debug <= std_logic_vector(add_out(7 downto 0));
 --	debug <= std_logic_vector(tmp_dbg);
 --	debug <= std_logic_vector(mul_res(51 downto 44));
 		
