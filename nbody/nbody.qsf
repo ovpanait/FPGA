@@ -242,10 +242,8 @@ set_global_assignment -name EDA_TIME_SCALE "1 ps" -section_id eda_simulation
 set_global_assignment -name EDA_OUTPUT_DATA_FORMAT "VERILOG HDL" -section_id eda_simulation
 set_global_assignment -name VHDL_FILE seg_7.vhd
 set_global_assignment -name VERILOG_FILE DE10_LITE_Golden_Top.v
-set_global_assignment -name VHDL_FILE pipe_st1.vhd
 set_global_assignment -name VHDL_FILE nbody.vhd
 set_global_assignment -name VHDL_FILE r_cube.vhd
-set_global_assignment -name VHDL_FILE pipe_st2.vhd
 set_global_assignment -name VHDL_FILE ../uart/qtest.vhd
 set_global_assignment -name VHDL_FILE ../uart/uart.vhd
 set_global_assignment -name VHDL_FILE ../uart/uart_test.vhd
@@ -448,4 +446,7 @@ set_global_assignment -name VHDL_FILE fast_isq_st2.vhd
 set_global_assignment -name VHDL_FILE fast_isq_st1.vhd
 set_global_assignment -name VHDL_FILE fast_isq_st3.vhd
 set_global_assignment -name VHDL_FILE fast_isq_st4.vhd
+set_global_assignment -name VHDL_FILE r_st3.vhd
+set_global_assignment -name VHDL_FILE r_st4.vhd
+set_global_assignment -name VHDL_FILE r_st5.vhd
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
