@@ -446,4 +446,6 @@ set_global_assignment -name VHDL_FILE ftou.vhd
 set_global_assignment -name VHDL_FILE fp_add.vhd
 set_global_assignment -name VHDL_FILE fast_isq_st2.vhd
 set_global_assignment -name VHDL_FILE fast_isq_st1.vhd
+set_global_assignment -name VHDL_FILE fast_isq_st3.vhd
+set_global_assignment -name VHDL_FILE fast_isq_st4.vhd
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

@@ -21,13 +21,11 @@ end fast_isq_st1;
 
 architecture arch of fast_isq_st1 is
 	-- floating point representation of 0.5F
-signal OH_F: unsigned(63 downto 0) := "0011111111100000000000000000000000000000000000000000000000000000"; -- 0.5
-	--	constant OH_F:		unsigned(63 downto 0) := "0011111111111000000000000000000000000000000000000000000000000000";
+	signal OH_F: unsigned(63 downto 0) := "0011111111100000000000000000000000000000000000000000000000000000"; -- 0.5
 	-- 64 bit magic number
-	constant MN_F: 	unsigned(63 downto 0) := "0101111111100110111010110101000011000111101101010011011110101001";
+	signal MN_F: 	unsigned(63 downto 0) := "0101111111100110111010110101000011000111101101010011011110101001";
 	-- 0.5F * input
 	signal xhalf:		unsigned(63 downto 0);
-	signal tmp_eno:	std_logic;	
 	-- registers
 	signal x_reg, x_next:					unsigned(63 downto 0);
 	signal en_out_reg, en_out_next:		std_logic;					
@@ -44,14 +42,14 @@ begin
 		end if;
 	end process;
 	
-	process(input, en_in)
+	process(input, en_in, MN_F)
 	begin
 		x_next <= (MN_F - ('0' & input(63 downto 1))); -- i  = MAGIC_NR - ( i >> 1 );
 		en_out_next <= '1';
 	end process;
 	
 	input_half: work.fpmu
-		port map(clk => clk, reset => reset, en_in => en_in, a => OH_F, b => input, result => in_half, en_out => tmp_eno);
+		port map(clk => clk, reset => reset, en_in => en_in, a => OH_F, b => input, result => in_half, en_out => open);
 
 	x 			<= x_reg;
 	en_out 	<= en_out_reg;

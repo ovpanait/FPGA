@@ -41,7 +41,7 @@ begin
 	--next-state-logic	
 	tmp_sig <= a_sig xor b_sig;
 	tmp_exp <= (('0' & a_exp) + ('0' & b_exp));
-	tmp_man <= unsigned(('1' & a_man) * ('1' & b_man));	
+	tmp_man <= ('1' & a_man) * ('1' & b_man);	
 	
 	res_sig	<= tmp_sig;
 	
