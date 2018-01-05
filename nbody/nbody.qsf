@@ -42,7 +42,7 @@ set_global_assignment -name DEVICE 10M50DAF484C6GES
 set_global_assignment -name TOP_LEVEL_ENTITY qtest
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 15.1.0
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "17:45:13 JUNE 17,2016"
-set_global_assignment -name LAST_QUARTUS_VERSION "17.0.2 Lite Edition"
+set_global_assignment -name LAST_QUARTUS_VERSION "17.1.0 Lite Edition"
 set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
 set_global_assignment -name DEVICE_FILTER_PACKAGE FBGA
 set_global_assignment -name DEVICE_FILTER_PIN_COUNT 484
@@ -240,10 +240,8 @@ set_global_assignment -name BOARD "MAX 10 DE10 - Lite"
 set_global_assignment -name EDA_SIMULATION_TOOL "ModelSim-Altera (Verilog)"
 set_global_assignment -name EDA_TIME_SCALE "1 ps" -section_id eda_simulation
 set_global_assignment -name EDA_OUTPUT_DATA_FORMAT "VERILOG HDL" -section_id eda_simulation
-set_global_assignment -name VHDL_FILE seg_7.vhd
 set_global_assignment -name VERILOG_FILE DE10_LITE_Golden_Top.v
 set_global_assignment -name VHDL_FILE nbody.vhd
-set_global_assignment -name VHDL_FILE r_cube.vhd
 set_global_assignment -name VHDL_FILE ../uart/qtest.vhd
 set_global_assignment -name VHDL_FILE ../uart/uart.vhd
 set_global_assignment -name VHDL_FILE ../uart/uart_test.vhd
@@ -449,4 +447,8 @@ set_global_assignment -name VHDL_FILE fast_isq_st4.vhd
 set_global_assignment -name VHDL_FILE r_st3.vhd
 set_global_assignment -name VHDL_FILE r_st4.vhd
 set_global_assignment -name VHDL_FILE r_st5.vhd
+set_global_assignment -name VHDL_FILE r_st2.vhd
+set_global_assignment -name VHDL_FILE r_st1.vhd
+set_global_assignment -name VHDL_FILE vel_controller.vhd
+set_global_assignment -name VHDL_FILE controller.vhd
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
