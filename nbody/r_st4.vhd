@@ -34,7 +34,7 @@ begin
 	end process;
 
 -- Next state logic
-	process(en_in)
+	process(en_in, r)
 	begin
 		if en_in = '1' then
 			en_out_next <= '1';

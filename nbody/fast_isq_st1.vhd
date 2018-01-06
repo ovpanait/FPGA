@@ -8,9 +8,9 @@ entity fast_isq_st1 is
 	port(
 		clk:			in std_logic;
 		reset:		in std_logic;
+		en_in:		in std_logic;
 		
 		input:		in unsigned(63 downto 0);
-		en_in:		in std_logic;
 		
 		x:				out unsigned(63 downto 0);
 		in_half:		out unsigned(63 downto 0);

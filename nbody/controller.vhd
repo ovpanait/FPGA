@@ -14,10 +14,11 @@ entity ld_controller is
   port(
 		clk, reset:		in std_logic;
 		ready:			in std_logic;
-		
-		wr_en:			in std_logic;
-		w_addr:     	in unsigned(ADDRESS_W - 1 downto 0);
-		w_data:        in unsigned(DATA_W - 1 downto 0);
+
+		add_en:			in std_logic;
+		up_addr:			in unsigned(ADDRESS_W - 1 downto 0);
+		vx:				in unsigned(63 downto 0);
+		vy:				in unsigned(63 downto 0);
 		
 		ld_a:				out unsigned(DATA_W - 1 downto 0);
 		ld_b:				out unsigned(DATA_W - 1 downto 0);
@@ -32,7 +33,10 @@ architecture arch of ld_controller is
 	type reg_file_type is array ((2**ADDRESS_W) - 1 downto 0) of
 		unsigned(DATA_W-1 downto 0);
 	signal array_reg:     reg_file_type;
-	 
+	
+	signal wr_en:			 std_logic;
+	signal w_data:        unsigned(DATA_W - 1 downto 0);	
+	
 	signal cnt_a_reg, cnt_b_reg:		unsigned(ADDRESS_W - 1 downto 0);
 	signal cnt_a_next, cnt_b_next:	unsigned(ADDRESS_W - 1 downto 0);
 	signal start_next, start_reg:		std_logic;
@@ -51,13 +55,13 @@ begin
 		start_reg <= start_next;
 		
       if (wr_en = '1') then
-        array_reg(to_integer(unsigned(w_addr))) <= w_data;
+        array_reg(to_integer(unsigned(up_addr))) <= w_data;
       end if;
 		
 	 end if;
   end process;
 
-  process(array_reg, cnt_a_reg, cnt_b_reg)
+  process(array_reg, cnt_a_reg, cnt_b_reg, ready)
   begin
 	cnt_a_next	<= cnt_a_reg;
 	cnt_b_next 	<= cnt_b_reg;
@@ -83,6 +87,24 @@ begin
   
   	ld_a <= array_reg(to_integer(cnt_a_reg));
 	ld_b <= array_reg(to_integer(cnt_b_reg));
-	start <= start_reg;
+
+	-- update 
+	upd_posx : work.fp_add
+	port map(
+		clk, reset, add_en,
+		array_reg(to_integer(up_addr))(127 downto 64), 
+		vx,
+		w_data(127 downto 64), 
+		wr_en);
+	
+	upd_posy : work.fp_add
+		port map(
+			clk, reset, add_en,
+			array_reg(to_integer(up_addr))(63 downto 0), 
+			vy,
+			w_data(63 downto 0), 
+			open);
+	
+	start  <= start_reg;
 end arch;
 

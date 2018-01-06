@@ -18,6 +18,10 @@ entity vel_controller is
 		delta_vx:		in unsigned(63 downto 0);
 		delta_vy:		in unsigned(63 downto 0);
 		
+		up_pos:			out std_logic;
+		w_addr:			out unsigned(ADDRESS_W - 1 downto 0);
+		vx, vy:			out unsigned(63 downto 0);
+		
 		restart:			out std_logic
     );
 end vel_controller;
@@ -34,6 +38,9 @@ architecture arch of vel_controller is
 	signal cnt_a_next, cnt_b_next:		unsigned(ADDRESS_W - 1 downto 0);
 	signal restart_reg, restart_next:	std_logic;
 	
+	signal up_pos_reg, up_pos_next:		std_logic;
+	signal w_addr_reg, w_addr_next:		unsigned(ADDRESS_W - 1 downto 0);
+	
 	signal wr_en:			std_logic;
 	signal w_data1:      unsigned(DATA_W - 1 downto 0);
 	signal w_data2:      unsigned(DATA_W - 1 downto 0);
@@ -46,23 +53,33 @@ begin
 		cnt_a_reg	<= (others => '0');
 		cnt_b_reg	<= (others => '0');
 		restart_reg <= '0';
+
+		w_addr_reg  <= (others => '0');
+		up_pos_reg  <= '0';
     elsif (clk'event and clk='1') then
 		cnt_a_reg 	<= cnt_a_next;
 		cnt_b_reg 	<= cnt_b_next;
 		restart_reg <= restart_next;
+		
+		w_addr_reg  <= w_addr_next;
+		up_pos_reg  <= up_pos_next;
+		
+			if (wr_en = '1') then
+				array_reg(to_integer(cnt_a_reg)) <= w_data1;
+				array_reg(to_integer(cnt_b_reg)) <= w_data2;
+			end if;
 	 end if;
 	end process;
 	
-	process(array_reg, cnt_a_reg, cnt_b_reg, wr_en)
+	process(array_reg, cnt_a_reg, cnt_b_reg, wr_en, w_data1, w_data2)
 	begin
 	cnt_a_next	 <= cnt_a_reg;
 	cnt_b_next 	 <= cnt_b_reg;
 	restart_next <= '0';
+	up_pos_next  <= '0';
+	w_addr_next  <= cnt_a_reg;
 	
 	if (wr_en = '1') then
-		array_reg(to_integer(cnt_a_reg)) <= w_data1;
-		array_reg(to_integer(cnt_b_reg)) <= w_data2;
-		
 		if (cnt_b_reg = CNT_MAX) then
 			if (cnt_a_reg = CNT_MAX - 1) then
 				-- start over
@@ -73,6 +90,8 @@ begin
 				cnt_a_next <= cnt_a_reg + to_unsigned(1, cnt_a_reg'length);
 				cnt_b_next <= cnt_a_reg + to_unsigned(2, cnt_a_reg'length);
 			end if;
+			
+			up_pos_next <= '1';
 		else
 			cnt_b_next <= cnt_b_reg + 1;
 		end if;
@@ -109,7 +128,12 @@ begin
 			array_reg(to_integer(cnt_b_reg))(63 downto 0),
 			w_data1(63 downto 0), 
 			open);
-			
+	
+	w_addr  <= w_addr_reg;
+	up_pos  <= up_pos_reg;
+	vx		  <= array_reg(to_integer(w_addr_reg))(DATA_W - 1 downto 64);
+	vy		  <= array_reg(to_integer(w_addr_reg))(63 downto 0);
+	
 	restart <= restart_reg;
 end arch;
 
