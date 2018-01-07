@@ -37,10 +37,10 @@ entity uart is
     port (  
         clock               :   in  std_logic;
         reset               :   in  std_logic;    
-        data_stream_in      :   in  std_logic_vector(7 downto 0);
+        data_stream_in      :   in  unsigned(7 downto 0);
         data_stream_in_stb  :   in  std_logic;
         data_stream_in_ack  :   out std_logic;
-        data_stream_out     :   out std_logic_vector(7 downto 0);
+        data_stream_out     :   out unsigned(7 downto 0);
         data_stream_out_stb :   out std_logic;
         tx                  :   out std_logic;
         rx                  :   in  std_logic
@@ -75,7 +75,7 @@ architecture rtl of uart is
         tx_send_stop_bit
     );             
     signal uart_tx_state : uart_tx_states := tx_send_start_bit;
-    signal uart_tx_data_vec : std_logic_vector(7 downto 0) := (others => '0');
+    signal uart_tx_data_vec : unsigned(7 downto 0) := (others => '0');
     signal uart_tx_data : std_logic := '1';
     signal uart_tx_count : unsigned(2 downto 0) := (others => '0');
     signal uart_rx_data_in_ack : std_logic := '0';
@@ -89,8 +89,8 @@ architecture rtl of uart is
     );            
     signal uart_rx_state : uart_rx_states := rx_get_start_bit;
     signal uart_rx_bit : std_logic := '1';
-    signal uart_rx_data_vec : std_logic_vector(7 downto 0) := (others => '0');
-    signal uart_rx_data_sr : std_logic_vector(1 downto 0) := (others => '1');
+    signal uart_rx_data_vec : unsigned(7 downto 0) := (others => '0');
+    signal uart_rx_data_sr : unsigned(1 downto 0) := (others => '1');
     signal uart_rx_filter : unsigned(1 downto 0) := (others => '1');
     signal uart_rx_count : unsigned(2 downto 0) := (others => '0');
     signal uart_rx_data_out_stb : std_logic := '0';
@@ -280,8 +280,9 @@ begin
                             uart_tx_data  <= '0';
                             uart_tx_state <= tx_send_data;
                             uart_tx_count <= (others => '0');
-                            uart_rx_data_in_ack <= '1';
                             uart_tx_data_vec <= data_stream_in;
+								else
+									uart_rx_data_in_ack <= '1';
                         end if;
                     when tx_send_data =>
                         if tx_baud_tick = '1' then
@@ -302,10 +303,12 @@ begin
                         if tx_baud_tick = '1' then
                             uart_tx_data <= '1';
                             uart_tx_state <= tx_send_start_bit;
+									 uart_rx_data_in_ack <= '1';
                         end if;
                     when others =>
                         uart_tx_data <= '1';
                         uart_tx_state <= tx_send_start_bit;
+								uart_rx_data_in_ack <= '1';
                 end case;
             end if;
         end if;

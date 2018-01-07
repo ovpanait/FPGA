@@ -7,8 +7,15 @@ entity nbody is
 		clk:		in std_logic;
 		reset: 	in std_logic;
 		
-		debug:	out std_logic_vector(7 downto 0)
-		
+		-- debug and init
+		-- uart transmitter
+		uart_out:   	  	out unsigned(7 downto 0); -- byte to transmit
+		uart_out_start: 	out std_logic; -- start transmitting
+		uart_out_done:  	in std_logic; -- byte sent
+
+		-- uart receiver
+		uart_in_data:	  	in unsigned(7 downto 0); --received data		
+		uart_in_flag: 		in std_logic -- byte received
 		);
 end nbody;
 		
@@ -65,16 +72,14 @@ signal fisr_res:	unsigned(63 downto 0);
 signal up_pos:				std_logic;
 signal up_addr:			unsigned(ADDRESS_W - 1 downto 0);
 signal vx, vy:			   unsigned(63 downto 0);
-signal restart:			std_logic;
-
--- debug
-signal tmp_dbg:	unsigned(7 downto 0);
+signal restart:			std_logic;	
 begin
 -----------------------------------------------------------------------------
 -- ************************* Controllers ************************************
 -----------------------------------------------------------------------------
 	ld_cntr: work.ld_controller
-		port map(clk, reset, restart, up_pos, up_addr, vx, vy, open, open, open);
+		port map(clk, reset, restart, up_pos, up_addr, vx, vy, open, open, open, 
+		uart_out, uart_out_start, uart_out_done, uart_in_data, uart_in_flag);
 
 	vel_cntr: work.vel_controller
 		port map(clk, reset, en_out8, fisr_res, fisr_res, up_pos, up_addr, vx, vy, restart);
@@ -132,14 +137,5 @@ begin
 -----------------------------------------------------------------------------
 -- **************************** DEBUG ***************************************
 -----------------------------------------------------------------------------
---	debug <= std_logic_vector(fisr_res(63 downto 56));
---	debug <= std_logic_vector(fisr_res(55 downto 48));
---	debug <= std_logic_vector(fisr_res(47 downto 40));
-	debug <= std_logic_vector(fisr_res(39 downto 32));
---	debug <= std_logic_vector(fisr_res(31 downto 24));
---	debug <= std_logic_vector(fisr_res(23 downto 16));
---	debug <= std_logic_vector(fisr_res(15 downto 8));
---	debug <= std_logic_vector(fisr_res(7 downto 0));
---	debug <= std_logic_vector(tmp_dbg);
 		
 end arch;

@@ -71,7 +71,7 @@ begin
 	 end if;
 	end process;
 	
-	process(array_reg, cnt_a_reg, cnt_b_reg, wr_en, w_data1, w_data2)
+	process(array_reg, cnt_a_reg, cnt_b_reg, wr_en)
 	begin
 	cnt_a_next	 <= cnt_a_reg;
 	cnt_b_next 	 <= cnt_b_reg;
@@ -126,7 +126,7 @@ begin
 			clk, reset, en_in,
 			not delta_vy(63) & delta_vy(62 downto 0), 
 			array_reg(to_integer(cnt_b_reg))(63 downto 0),
-			w_data1(63 downto 0), 
+			w_data2(63 downto 0), 
 			open);
 	
 	w_addr  <= w_addr_reg;
