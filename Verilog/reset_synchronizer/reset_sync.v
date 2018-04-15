@@ -18,9 +18,3 @@ module reset_sync(
 	end
      end // always @ (posedge clk, negedge reset)
 endmodule // reset_sync
-
-	   
-	   
-	   
-
-	
